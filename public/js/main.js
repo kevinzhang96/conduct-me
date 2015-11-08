@@ -1,5 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 var BPM;
+var targetspd = 1;
 var calcBPM = function(fname) {
   console.log(fname);
   $.ajax({
@@ -486,6 +487,7 @@ var calcBPM = function(fname) {
   };
 
   a.audioBullshit = function(data) {
+    targetspd = 1;
     // uses web audio api to expose waveform data
     console.log("a.audioBullshit fired");
 
@@ -513,6 +515,12 @@ var calcBPM = function(fname) {
     a.frameLooper();
 
     var audioobj = document.getElementsByTagName("audio")[0];
+    var cloop = function() {
+      audioobj.playbackRate += (targetspd - audio.playbackRate) * 0.1;
+      //console.log("playbackrate " + audio.playbackRate);
+      var x = setTimeout(requestAnimationFrame(cloop), 1000 / 16);
+    }
+    cloop();
 		// var text = document.getElementById("text");;
 
 			var socket = io('http://localhost:3001');
