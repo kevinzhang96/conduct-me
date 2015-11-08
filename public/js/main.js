@@ -7,7 +7,7 @@
 	var WAVE_DATA = []; 													// normalized waveform data used in visualizations
 
 	// main app/init stuff //////////////////////////////////////////////////////////////////////////
-	var a = {};	
+	var a = {};
 	a.init = function() {
 		console.log("a.init fired");
 
@@ -67,9 +67,9 @@
 			a.findAudio();
 			return;
 		}
-		
+
 		if (h.getURLParameter('sc') == null)
-			a.loadSound();		
+			a.loadSound();
 		else
 			a.soundCloud();
 
@@ -98,14 +98,14 @@
 		$('.icon-keyboard2').on(click, function() { h.showModal('#modal-keyboard'); });
 		$('.icon-volume-medium').on(click, function() { audio.muted = (audio.muted == true) ? false : true; });
 		$('.icon-github2').on(click, function() { window.open('http://github.com/preziotte/party-mode','_blank'); });
-		$('.icon-loop-on').on(click, function() { 
+		$('.icon-loop-on').on(click, function() {
 			$(this).find('b').text(State.loopText[(State.loop)%4]);
-			h.infiniteChange(State.loopDelay[(State.loop++)%4]); 
+			h.infiniteChange(State.loopDelay[(State.loop++)%4]);
 		});
 		$('.md-close').on(click, h.hideModals);
 		$('.dotstyle').on(click, 'li', function() { h.themeChange($(this).find('a').text()); });
-		$('#slider').on('input change', function() { analyser.smoothingTimeConstant = 1-(this.value/100); }); 
-		$('#slider').on('change', function() { $('#slider').blur(); }); 
+		$('#slider').on('input change', function() { analyser.smoothingTimeConstant = 1-(this.value/100); });
+		$('#slider').on('change', function() { $('#slider').blur(); });
 		$('.i').on('mouseenter', h.tooltipReplace);
 		$('.i').on('mouseleave', h.tooltipUnReplace);
 
@@ -113,7 +113,7 @@
 		$(document).on('dragover', h.stop);
 		$(document).on('drop', h.handleDrop );
 
-		document.addEventListener("waveform", function (e) { 
+		document.addEventListener("waveform", function (e) {
 			//console.log(e.detail);
 			waveform_array = e.detail;
 			//audio = this;
@@ -139,8 +139,8 @@
 
 		Mousetrap.bind('esc', h.hideModals);
 		Mousetrap.bind('space', h.togglePlay);
-		Mousetrap.bind('f', h.toggleFullScreen); 
-		Mousetrap.bind('m', function() { h.toggleMenu('toggle') }); 
+		Mousetrap.bind('f', h.toggleFullScreen);
+		Mousetrap.bind('m', function() { h.toggleMenu('toggle') });
 		Mousetrap.bind('c', function() { h.changeSong(); });
 		Mousetrap.bind('l', function() { $('.icon-loop-on').trigger('click'); });
 		Mousetrap.bind('k', function() { $('.icon-keyboard2').trigger('click'); });
@@ -187,13 +187,13 @@
 	    var request = new XMLHttpRequest();
 	    request.open("GET", "mp3/"+State.playlist[0], true);
 	    request.responseType = "arraybuffer";
-	 
+
 	    request.onload = function(event) {
 	        var data = event.target.response;
-	 
+
 	        a.audioBullshit(data);
 	    };
-	 
+
 	    request.send();
 
 		};
@@ -202,12 +202,12 @@
 
 		audio = new Audio();
 		//audio.remove();
-		audio.src = f; 
+		audio.src = f;
 	    //audio.controls = true;
 	    //audio.loop = true;
 	    audio.autoplay = true;
  		audio.addEventListener('ended', function() { h.songEnded(); }, false);
-		
+
 		$('#audio_box').empty();
 		document.getElementById('audio_box').appendChild(audio);
         a.audioBullshit();
@@ -215,16 +215,16 @@
 		};
 
 	a.soundCloud = function() {
-		console.log('a.soundCloud fired');		
+		console.log('a.soundCloud fired');
 
 		// if mozilla or safar, just loadsound instead
 		if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
-			a.loadSound();	
-			return;	
+			a.loadSound();
+			return;
 		}
 		if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-			a.loadSound();	
-			return;	
+			a.loadSound();
+			return;
 		}
 
 		State.soundCloudURL = $('#sc_input').val() || h.getURLParameter('sc');
@@ -237,7 +237,7 @@
 
 		// use /resolve to get tracks/playlists/whatever from url
 		$.get(
-		  'http://api.soundcloud.com/resolve.json?url=' + State.soundCloudURL + '&client_id=67129366c767d009ecc75cec10fa3d0f', 
+		  'http://api.soundcloud.com/resolve.json?url=' + State.soundCloudURL + '&client_id=67129366c767d009ecc75cec10fa3d0f',
 		  function (result) {
 		  	State.soundCloudData = result;
 		    console.log(result);
@@ -311,11 +311,11 @@
 			State.metaLock = true;
 
 		// in 3 seconds, remove class unless lock
-		metaHide = setTimeout(function() { 
+		metaHide = setTimeout(function() {
 			State.metaLock = false;
 			$('.song-metadata').removeClass("show-meta");
 
-		}, 3000); 	
+		}, 3000);
 		a.loadSoundHTML5(sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
 
 		});
@@ -344,7 +344,7 @@
 					var src = window.URL.createObjectURL(micStream);
 		 			root.source = context.createMediaStreamSource(micStream)
 					source.connect(analyser);
-					analyser.connect(context.destination);	
+					analyser.connect(context.destination);
 					audio.pause();
 					//audio.src = null;
 				}, h.microphoneError);
@@ -367,7 +367,7 @@
 
 		root.analyser = context.createAnalyser();
         //analyser.smoothingTimeConstant = .4; // .8 default
-		
+
 		if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
 	        root.source = context.createBufferSource();
 	        source.buffer = context.createBuffer(data, false);
@@ -377,8 +377,10 @@
 	    else {
 	    	// https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor
 	 		root.source = context.createMediaElementSource(audio);  // doesn't seem to be implemented in safari :(
+			audio.id = "audio_player";
+			audio.playbackRate = 2;
 	 		//root.source = context.createMediaStreamSource()
-	 		//root.source = context.createScriptProcessor(4096, 1, 1);  
+	 		//root.source = context.createScriptProcessor(4096, 1, 1);
 
 	    }
 
@@ -414,21 +416,21 @@
 
 	    now = Date.now();
 	    delta = now - State.then;
-	    
+
 	    if (audio)
 	        $('#progressBar').attr('style','width: '+(audio.currentTime/audio.duration)*100+"%");
-	     
+
 	    // some framerate limiting logic -- http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/
 	    if (delta > State.drawInterval) {
 	        State.then = now - (delta % State.drawInterval);
-	    
+
 			// update waveform data
 			if (h.detectEnvironment() != 'chrome-extension') {
 			 	waveform_array = new Uint8Array(analyser.frequencyBinCount);
 			 	analyser.getByteFrequencyData(waveform_array);
 			 	//analyser.getByteTimeDomainData(waveform_array);
 			}
-			
+
 			// if (c.kickDetect(95)) {
 			// 	h.themeChange(Math.floor(Math.random() * 6));
 			//  	h.vizChange(Math.floor(Math.random() * 7));
@@ -489,7 +491,7 @@
 	root.App = a;
 
 	// manipulating/normalizing waveform data ///////////////////////////////////////////////////////
-	var c = {}; 
+	var c = {};
 	c.kickDetect = function(threshold) {
 		var kick = false;
 
@@ -532,7 +534,7 @@
 				numbers2[i] = -Math.abs(numbers2[i]);
 		}
 		return numbers2;
-		
+
 		};
 	c.normalize_binned = function(binsize, coef, offset, neg) {
 
@@ -562,7 +564,7 @@
 				numbers2[i] = -Math.abs(numbers2[i]);
 		}
 		return numbers2;
-		
+
 		};
 	c.total = function() { return Math.floor(d3.sum(waveform_array)/waveform_array.length); };
 	c.total_normalized = function() {};
@@ -587,11 +589,11 @@
 	  	}
 	  	//console.log(copy);
 	  	return copy;
-		};	
+		};
 	root.Compute = c;
 
 	// rendering svg based on normalized waveform data //////////////////////////////////////////////
-	var r = {};	
+	var r = {};
 	r.circle = function() {
 
 		if (State.active != 'circle') {
@@ -684,7 +686,7 @@
 			.attr("height", function(d) { return x(d) + ""; });
 
 		bars.exit().remove();
-		};	
+		};
 	r.chop_thumb = function() {
 
 		if (State.thumbs_init[1] != 'init') {
@@ -719,7 +721,7 @@
 	r.icosahedron = function() {
 
 		// http://bl.ocks.org/mbostock/7782500
-		
+
 		if (State.active == 'icosahedron') {
 
 	  		var time = Date.now() - t0;
@@ -846,7 +848,7 @@
 		root.svg_thumb_three = d3.select("#icosahedron").append("svg")
 			.attr("width", width)
 			.attr("height", height);
-		
+
 		root.face_thumb = svg_thumb_three.selectAll("path")
 		    .data(h.icosahedronFaces)
 		    .enter().append("path")
@@ -945,7 +947,7 @@
 
 		path = d3.geo.path()
 		    .projection(projection);
-		
+
 		graticule = d3.geo.graticule()
 		    .minorStep([5, 5])
      		.minorExtent([[-180, -90], [180, 90 + 1e-4]]);
@@ -959,7 +961,7 @@
 		φ = d3.scale.linear()
 		    .domain([0, State.height])
 		    .range([90, -90]);
-		 
+
 		grat = svg.append("path")
 		    .datum(graticule)
 		    .attr("class", "graticule")
@@ -1006,11 +1008,11 @@
 
 		path = d3.geo.path()
 		    .projection(projection);
-		
+
 		graticule = d3.geo.graticule()
 		    .minorStep([2, 2])
      		.minorExtent([[-180, -90], [180, 90 + 1e-4]]);
- 
+
 		svg_thumb_four = d3.select("#grid").append("svg")
 			.attr("width", width)
 			.attr("height", height);
@@ -1190,7 +1192,7 @@
 		};
 	r.hexbin = function() {
 
-		// http://bl.ocks.org/mbostock/4248145 
+		// http://bl.ocks.org/mbostock/4248145
 		// http://bl.ocks.org/mbostock/4248146
 
 		$('body > svg').empty();
@@ -1233,7 +1235,7 @@
 		};
 	r.hexbin_thumb = function() {
 
-		// http://bl.ocks.org/mbostock/4248145 
+		// http://bl.ocks.org/mbostock/4248145
 		// http://bl.ocks.org/mbostock/4248146
 
 		var width = $('#hexbin').width();
@@ -1310,7 +1312,7 @@
 		redraw();
 
 		function redraw() {
-			
+
 			vertices = d3.range(100).map(function(d) {
 			  return [Math.random() * width, Math.random() * height];
 			});
@@ -1384,7 +1386,7 @@
 		}
 		}
 	h.hideHUD = function() {
-		//$('.icon-knobs').is(':hover') || 
+		//$('.icon-knobs').is(':hover') ||
 		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover') || $('.song-metadata').is(':hover') || $('.icon-forward2').is(':hover') || $('.icon-backward2').is(':hover') || $('.icon-pause').is(':hover') || $('.schover').is(':hover'))
 			return;
 
@@ -1425,14 +1427,14 @@
 		}
 
 		$(id).addClass('md-show');
-		
+
 		};
 	h.hideModals = function() {
 		$('.md-modal').removeClass('md-show');
 		};
 
 	h.resize = function() {
-		console.log('h.resize fired');		
+		console.log('h.resize fired');
 	    State.width = $(window).width();
 		State.height = $(window).height();
 		State.active = State.trigger;
@@ -1453,7 +1455,7 @@
 		h.removeSoundCloud();
 		//if (window.File && window.FileReader && window.FileList && window.Blob) {
 
-    	URL.revokeObjectURL(objectUrl);		
+    	URL.revokeObjectURL(objectUrl);
     	var file = e.originalEvent.dataTransfer.files[0];
 
 		if (!file.type.match(/audio.*/)) {
@@ -1470,20 +1472,20 @@
 
 			   //  	if (files[0].type.match(/audio.*/)) {
 			   //  		console.log('true');
-				
-						// var read = new FileReader(); 
+
+						// var read = new FileReader();
 						// read.readAsDataURL(files[0]);
-						// read.onload = function(e) { 
+						// read.onload = function(e) {
 						// 	console.log(' -- FileReader onload fired');
-							
-						// 	// fuuzikplay[3] = soundManager.createSound({ 
-						// 	// id: "audio", 
-						// 	// url: d.target.result 
-						// 	// }); 
-						// 	//audio.pause(); 
-				   			
+
+						// 	// fuuzikplay[3] = soundManager.createSound({
+						// 	// id: "audio",
+						// 	// url: d.target.result
+						// 	// });
+						// 	//audio.pause();
+
 				  //  			audio = new Audio();
-						// 	audio.src = e.target.result; 
+						// 	audio.src = e.target.result;
 						//     audio.controls = true;
 						//     audio.loop = true;
 						//     audio.autoplay = true;
@@ -1494,7 +1496,7 @@
 
 						// };
 			   //  	}
-		
+
 		};
 	h.readID3 = function(file) {
 		console.log('h.readID3 fired');
@@ -1526,7 +1528,7 @@
 			    	//console.log("data:" + image.format + ";base64," + window.btoa(base64String));
 			    	//$("art").src = "data:" + image.format + ";base64," + window.btoa(base64String);
 			    	//$("art").style.display = "block";
-			    } 
+			    }
 			    else {
 			    	//console.log("nope.");
 			    	//$("art").style.display = "none";
@@ -1558,13 +1560,13 @@
 		$('.icon-pause').toggleClass('icon-play');
 		};
 	h.songEnded = function() {
-		console.log('h.songEnded fired');		
+		console.log('h.songEnded fired');
 
 		h.changeSong('n');
 
 		};
 	h.changeSong = function(direction) {
-		console.log('h.changeSong fired');		
+		console.log('h.changeSong fired');
 
 		var totalTracks = State.soundCloudTracks || State.playlist.length;
 
@@ -1607,7 +1609,7 @@
 
 		};
 	h.renderSongTitle = function(obj) {
-		console.log('h.renderSongTitle fired');		
+		console.log('h.renderSongTitle fired');
 
 		if (State.soundCloudData) {
 			var trackNum = Math.abs(State.currentSong)%State.soundCloudTracks;
@@ -1615,10 +1617,10 @@
 			var prettyTitle = obj.title;
 
 			if (prettyTitle.search(regs) == -1)
-				prettyTitle += ' <b>' + obj.user.username + '</b>'; 
+				prettyTitle += ' <b>' + obj.user.username + '</b>';
 
 			//var prettyTitle = obj.title.replace(regs, "<b>"+obj.user.username+"</b>");
-			
+
 			if (State.soundCloudTracks > 1)
 				prettyTitle += ' ['+(trackNum+1)+'/'+State.soundCloudTracks+']';
 
@@ -1642,7 +1644,7 @@
 			State.metaLock = true;
 			clearTimeout(metaHide);
 			// in 3 seconds, remove class unless lock
-			metaHide = setTimeout(function() { 
+			metaHide = setTimeout(function() {
 				State.metaLock = false;
 				if (State.hud == 0)
 					$('.song-metadata').removeClass("show-meta");
@@ -1658,11 +1660,11 @@
 			State.hoverTemp = $('.song-metadata').html();
 			$('.song-metadata').html(text);
 		}
-	
+
 		};
 	h.tooltipUnReplace = function() {
 		console.log('h.tooltipUnReplace fired');
-		
+
 		if (State.hoverTemp != null) {
 			$('.song-metadata').html(State.hoverTemp);
 			State.hoverTemp = null;
@@ -1677,7 +1679,7 @@
 		audio.pause();
 		$('.icon-pause').removeClass('icon-play');
 		window.open($(this).attr('data-go'),'_blank');
-		
+
 		};
 
 	h.themeChange = function(n) {
@@ -1688,7 +1690,7 @@
 
 		console.log('h.themeChange:'+n);
 		var name = 'theme_'+n;
-		$('html').attr('class',name); 
+		$('html').attr('class',name);
 
 		$('.dotstyle li.current').removeClass('current');
 		$('.dotstyle li:eq('+n+')').addClass('current');
@@ -1764,7 +1766,7 @@
 			return 'safari';
 
 		//  https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-		
+
 		if (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
 			return 'opera';
 
@@ -1799,7 +1801,7 @@
 	h.prettyLog = function(data) {
 		console.log("h.prettyLog fired");
 		return false;
-		
+
 		var x = data || localStorage.account;
 		if (typeof x == 'object') x = JSON.stringify(x);
 		if (typeof data == "undefined") return;
@@ -1824,4 +1826,3 @@
 }).call(this);
 
 $(document).ready(App.init);
-
