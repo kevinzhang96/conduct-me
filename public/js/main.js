@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 var BPM;
 var calcBPM = function(fname) {
+  console.log(fname);
   $.ajax({
     method: 'GET',
     url: '/bpm?fname=' + fname,
@@ -24,6 +25,20 @@ var calcBPM = function(fname) {
           });
         })
       }
+    }, error: function(data) {
+      findBPM('/upload/' + fname, function(data) {
+        BPM = data[0].tempo;
+        console.log(data);
+        $.ajax({
+          method: 'POST',
+          url: '/bpm',
+          dataType: 'json',
+          data: {
+            'fname': fname,
+            'bpm': BPM
+          }
+        });
+      })
     }
   })
 };
@@ -277,6 +292,7 @@ var calcBPM = function(fname) {
     } else {
       console.log(" -- sound loaded via html5 audio");
       var path = h.getURLParameter('audio');
+      calcBPM(path);
       path = path ? '/upload/' + path : 'mp3/' + State.playlist[0];
       a.loadSoundHTML5(path);
       h.readID3(path);
@@ -313,7 +329,7 @@ var calcBPM = function(fname) {
     audio.addEventListener('ended', function() {
       h.songEnded();
     }, false);
-    calcBPM(f.replace(/^\/upload\//ig,""));
+    // calcBPM(f.replace(/^\/upload\//ig,""));
     $('#audio_box').empty();
     document.getElementById('audio_box').appendChild(audio);
     a.audioBullshit();
@@ -495,6 +511,17 @@ var calcBPM = function(fname) {
     analyser.connect(context.destination);
 
     a.frameLooper();
+
+    var audioobj = document.getElementsByTagName("audio")[0];
+		// var text = document.getElementById("text");;
+
+			var socket = io('http://localhost:3001');
+			socket.on('kinect', function(msg) {
+			  var bpm = Number(msg);
+			//  $("#disp").text(bpm);
+				console.log("New bpm: " + bpm);
+				targetspd = bpm / BPM; //Number($("#text").text());
+			})
   };
   a.findAudio = function() {
     // unused.
@@ -1747,7 +1774,7 @@ var calcBPM = function(fname) {
 
     BPM = undefined;
     var formdata = new FormData();
-    formdata.append("audioFile", file);
+    formdata.append("file", file);
     console.log(formdata);
     var xhr = new XMLHttpRequest;
     xhr.onreadystatechange = function() {

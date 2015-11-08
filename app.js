@@ -5,6 +5,15 @@ var Busboy = require('busboy');
 var path = require('path');
 var _ = require('underscore');
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+
+
+
+
+
 var BPM_FILE = path.join(__dirname, 'bpm.json');
 
 app.use(express.json());
@@ -51,19 +60,27 @@ app.post('/bpm', function(req, res) {
   fs.readFile(BPM_FILE, function(err, data) {
     var bpms = JSON.parse(data);
     if (!req.body) res.send(404);
-    if (bpms.filter(function(x) {
-        return x.fname == req.body.fname;
-      }) != []) res.json(bpms).end();
-    else {
+    // if (bpms.filter(function(x) {
+    //     return x.fname == req.body.fname;
+    //   }) != []) res.json(bpms).end();
+    // else {
       bpms.push(req.body);
       fs.writeFile(BPM_FILE, JSON.stringify(bpms, null, 4), function(err) {
         res.setHeader('Cache-Control', 'no-cache');
         res.json(bpms);
       });
-    }
+    // }
   });
 });
 
 
-
+http.listen(3001, function(){
+  console.log('listening on *:3001');
+});
+io.on('connection', function(socket){
+  socket.on('kinect', function(msg){
+    io.emit('kinect', msg);
+    console.log(msg);
+  });
+});
 app.listen(process.env.PORT || 3000);
