@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
 
         <title>Party Mode :: An audio visualizer experiment.</title>
-        
+
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
-        
+
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="icomoon/style.css">
         <link rel="stylesheet" href="css/style.css">
@@ -21,8 +21,9 @@
         <script src="js/mousetrap.js"></script>
         <script src="js/id3-minimized.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/findBPM.js"></script>
         <script src="//connect.soundcloud.com/sdk.js"></script>
-        
+
 
 
  <!--        <script> $(document).ready(function() { App.init(); }); </script> -->
@@ -56,7 +57,7 @@
                     <ul>
                         <li>
                             <a href="#" class="key"><span>1</span></a> through <a href="#" class="key"><span>7</span></a> selects a visualization
-                        </li>                        
+                        </li>
                         <li>
                             <a href="#" class="key" style='width: 58px;'><span>space</span></a> play / pause</a>
                         </li>
@@ -135,23 +136,23 @@
             <div id='progressBar' class='progressBar'></div>
             <div class='song-metadata'></div>
             <div class='menu-controls'>
-                <i class="i icon-backward2"></i> 
-                <i class="i icon-pause"></i> 
-                <i class="i icon-forward2"></i> 
-                <i class="i icon-soundcloud schover" data-hovertext='Play music from a SoundCloud URL.'></i> 
-                <i class="i icon-microphone" data-hovertext='Connect to the microphone on your computer.'></i> 
+                <i class="i icon-backward2"></i>
+                <i class="i icon-pause"></i>
+                <i class="i icon-forward2"></i>
+                <i class="i icon-soundcloud schover" data-hovertext='Play music from a SoundCloud URL.'></i>
+                <i class="i icon-microphone" data-hovertext='Connect to the microphone on your computer.'></i>
             </div>
 
             <div class='menu-wide'>
 
                 <div class='options'>
                     <i class="i icon-menu"></i>
-                    <i class="i icon-question"></i> 
-                    <i class="i icon-keyboard2"></i> 
-                    <i class="i icon-loop-on"><span>randomize visualization: <b>off</b></span></i> 
+                    <i class="i icon-question"></i>
+                    <i class="i icon-keyboard2"></i>
+                    <i class="i icon-loop-on"><span>randomize visualization: <b>off</b></span></i>
 <!--                     <i class="i icon-volume-medium"></i> -->
-                    <i class="i icon-github2"></i> 
-                    <i class="i icon-expand"></i> 
+                    <i class="i icon-github2"></i>
+                    <i class="i icon-expand"></i>
                 </div>
 
                 <div class="slider"><span>adjust sensitivity</span>
